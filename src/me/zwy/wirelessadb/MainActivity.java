@@ -27,52 +27,54 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	private ToggleButton toggle;
 	private boolean isCheck;
 	private boolean isRun;
+	private static final String COMMAD_START = "su && setprop service.adb.tcp.port 5555 && stop adbd && start adbd";
+	private static final String COMMAD_STOP = "su && setprop service.adb.tcp.port -1 && stop adbd && start adbd";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(isConnectWIFI()){
+//		if(isConnectWIFI()){
 				setContentView(R.layout.main);
-				ip = (TextView) findViewById(R.id.IP);
-				toggle = (ToggleButton) findViewById(R.id.toggle);
-				Runtime runtime = Runtime.getRuntime();
-				try {
-					Process pro = runtime.exec("getprop service.adb.tcp.port");
-					if(pro.waitFor() == 0){
-						BufferedReader in = new BufferedReader(new InputStreamReader(pro.getInputStream()));
-						String msg = in.readLine();
-						in.close();
-						if(msg.contains("5555")){
-							isCheck = true;
-							isRun = true;
-						}else{
-							isCheck = false;
-							isRun = false;
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			if(savedInstanceState != null){
-				isCheck = savedInstanceState.getBoolean("toggle");
-			}
-			toggle.setChecked(isCheck);
-			if(isCheck){
-				ip.setText("在CMD输入:\nadb connect " + getWIFIIP());
-			}else{
-				ip.setText("");
-			}
-			toggle.setOnCheckedChangeListener(this);
-		}else{
-			new AlertDialog.Builder(this).setTitle("没有WIFI连接！").setMessage("请连接WIFI！").setCancelable(false).setPositiveButton("确定", new OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			}).show();
-		}
+//				ip = (TextView) findViewById(R.id.IP);
+//				toggle = (ToggleButton) findViewById(R.id.toggle);
+//				Runtime runtime = Runtime.getRuntime();
+//				try {
+//					Process pro = runtime.exec("getprop service.adb.tcp.port");
+//					if(pro.waitFor() == 0){
+//						BufferedReader in = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+//						String msg = in.readLine();
+//						in.close();
+//						if(msg.contains("5555")){
+//							isCheck = true;
+//							isRun = true;
+//						}else{
+//							isCheck = false;
+//							isRun = false;
+//						}
+//					}
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			if(savedInstanceState != null){
+//				isCheck = savedInstanceState.getBoolean("toggle");
+//			}
+//			toggle.setChecked(isCheck);
+//			if(isCheck){
+//				ip.setText("在CMD输入:\nadb connect " + getWIFIIP());
+//			}else{
+//				ip.setText("");
+//			}
+//			toggle.setOnCheckedChangeListener(this);
+//		}else{
+//			new AlertDialog.Builder(this).setTitle("没有WIFI连接！").setMessage("请连接WIFI！").setCancelable(false).setPositiveButton("确定", new OnClickListener() {
+//				@Override
+//				public void onClick(DialogInterface dialog, int which) {
+//					finish();
+//				}
+//			}).show();
+//		}
 	}
 	
 	public boolean start(){

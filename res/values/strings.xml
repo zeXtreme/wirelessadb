@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">WirelessADB</string>
-    <string name="title">无线ADB</string>
+    <string name="start">开启</string>
+    <string name="stop">关闭</string>
 
 </resources>
