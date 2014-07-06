@@ -1,4 +1,4 @@
-package me.zwy.shell;
+package me.zwy.wirelessadb;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -19,7 +19,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.example.shell.R;
+import me.zwy.wirelessadb.R;
 
 public class MainActivity extends Activity implements OnCheckedChangeListener {
 	
