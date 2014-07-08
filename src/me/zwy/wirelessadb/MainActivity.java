@@ -18,7 +18,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
+import me.zwy.utils.ShellUtils;
+import me.zwy.utils.ShellUtils.CommandResult;
 import me.zwy.wirelessadb.R;
 
 public class MainActivity extends Activity implements OnCheckedChangeListener {
@@ -78,49 +79,13 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	}
 	
 	public boolean start(){
-		Runtime runtime = Runtime.getRuntime();
-		Process pro;
-		try {
-			pro = runtime.exec("su");
-			DataOutputStream dos = new DataOutputStream(pro.getOutputStream());
-			dos.writeBytes("setprop service.adb.tcp.port 5555\n");
-			dos.writeBytes("stop adbd\n");
-			dos.writeBytes("start adbd\n");
-			dos.flush();
-			dos.close();
-			if(pro.waitFor() == 0){
-				return true;
-			}else{
-				return false;
-			}
-		} catch (IOException e) {
-			return false;
-		} catch (InterruptedException e) {
-			return false;
-		}
+		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_START, true);
+		return result.result == 0;
 	}
 	
 	public boolean stop(){
-		Runtime runtime = Runtime.getRuntime();
-		Process pro;
-		try {
-			pro = runtime.exec("su");
-			DataOutputStream dos = new DataOutputStream(pro.getOutputStream());
-			dos.writeBytes("setprop service.adb.tcp.port -1\n");
-			dos.writeBytes("stop adbd\n");
-			dos.writeBytes("start adbd\n");
-			dos.flush();
-			dos.close();
-			if(pro.waitFor() == 0){
-				return true;
-			}else{
-				return false;
-			}
-		} catch (IOException e) {
-			return false;
-		} catch (InterruptedException e) {
-			return false;
-		}
+		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_STOP, true);
+		return result.result == 0;
 	}
 	
 	public boolean isConnectWIFI(){
