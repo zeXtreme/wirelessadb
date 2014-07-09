@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="32dp"
-        android:textOff="@string/stop"
-        android:textOn="@string/start" />
+        android:textOff="@string/off"
+        android:textOn="@string/on" />
 
 </LinearLayout>

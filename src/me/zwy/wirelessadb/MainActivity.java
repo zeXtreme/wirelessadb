@@ -9,11 +9,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
@@ -28,8 +31,6 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	private ToggleButton toggle;
 	private boolean isCheck;
 	private boolean isRun;
-	private static final String COMMAD_START = "su && setprop service.adb.tcp.port 5555 && stop adbd && start adbd";
-	private static final String COMMAD_STOP = "su && setprop service.adb.tcp.port -1 && stop adbd && start adbd";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +64,35 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 //			}
 //			toggle.setChecked(isCheck);
 //			if(isCheck){
-//				ip.setText("ÔÚCMDÊäÈë:\nadb connect " + getWIFIIP());
+//				ip.setText("ï¿½ï¿½CMDï¿½ï¿½ï¿½ï¿½:\nadb connect " + getWIFIIP());
 //			}else{
 //				ip.setText("");
 //			}
 //			toggle.setOnCheckedChangeListener(this);
 //		}else{
-//			new AlertDialog.Builder(this).setTitle("Ã»ÓÐWIFIÁ¬½Ó£¡").setMessage("ÇëÁ¬½ÓWIFI£¡").setCancelable(false).setPositiveButton("È·¶¨", new OnClickListener() {
+//			new AlertDialog.Builder(this).setTitle("Ã»ï¿½ï¿½WIFIï¿½ï¿½ï¿½Ó£ï¿½").setMessage("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½WIFIï¿½ï¿½").setCancelable(false).setPositiveButton("È·ï¿½ï¿½", new OnClickListener() {
 //				@Override
 //				public void onClick(DialogInterface dialog, int which) {
 //					finish();
 //				}
 //			}).show();
 //		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.ic_setting){
+			Intent intent = new Intent(this, SettingActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	public boolean start(){
@@ -110,7 +127,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 			if(!isRun){
 				start();
 				isRun = true;
-				ip.setText("ÔÚCMDÊäÈë:\nadb connect " + getWIFIIP());
+				ip.setText("ï¿½ï¿½CMDï¿½ï¿½ï¿½ï¿½:\nadb connect " + getWIFIIP());
 			}
 		}else{
 			if(isRun){
@@ -124,7 +141,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putBoolean("toggle", toggle.isChecked());
+//		outState.putBoolean("toggle", toggle.isChecked());
 	}
 	
 }
