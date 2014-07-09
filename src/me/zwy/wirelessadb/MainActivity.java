@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import me.zwy.utils.ShellUtils;
 import me.zwy.utils.ShellUtils.CommandResult;
@@ -37,6 +40,9 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 		super.onCreate(savedInstanceState);
 //		if(isConnectWIFI()){
 				setContentView(R.layout.main);
+				for(String commad : Constant.COMMAD_START){
+					Toast.makeText(this, commad, Toast.LENGTH_SHORT).show();
+				}
 //				ip = (TextView) findViewById(R.id.IP);
 //				toggle = (ToggleButton) findViewById(R.id.toggle);
 //				Runtime runtime = Runtime.getRuntime();

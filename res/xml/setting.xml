@@ -4,7 +4,7 @@
     <EditTextPreference
         android:defaultValue="5555"
         android:dialogTitle="@string/port"
-        android:key="@string/port"
+        android:key="port"
         android:summary="@string/current_port"
         android:title="@string/port" />
 
