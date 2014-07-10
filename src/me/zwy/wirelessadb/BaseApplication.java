@@ -12,7 +12,7 @@ public class BaseApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		SharedPreferences sp = getSharedPreferences("me.zwy.wirelessadb_preferences", MODE_PRIVATE);
-		port_current = CommonUtils.str2Int(sp.getString("port", Constant.PORT_DEFAULT));
+		port_current = CommonUtils.str2Int(sp.getString("port", String.valueOf(Constant.PORT_DEFAULT)));
 	}
 
 }

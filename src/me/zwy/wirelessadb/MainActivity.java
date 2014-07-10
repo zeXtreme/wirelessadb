@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -28,21 +29,22 @@ import me.zwy.utils.ShellUtils;
 import me.zwy.utils.ShellUtils.CommandResult;
 import me.zwy.wirelessadb.R;
 
-public class MainActivity extends Activity implements OnCheckedChangeListener {
+public class MainActivity extends Activity {
 	
-	private TextView ip;
-	private ToggleButton toggle;
-	private boolean isCheck;
-	private boolean isRun;
+//	private TextView ip;
+//	private ToggleButton toggle;
+//	private boolean isCheck;
+//	private boolean isRun;
+	private TextView adb_info;
+	private Switch adb_switch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		if(isConnectWIFI()){
 				setContentView(R.layout.main);
-				for(String commad : Constant.COMMAD_START){
-					Toast.makeText(this, commad, Toast.LENGTH_SHORT).show();
-				}
+				adb_info = (TextView) findViewById(R.id.adb_info);
+				adb_switch = (Switch) findViewById(R.id.adb_switch);
 //				ip = (TextView) findViewById(R.id.IP);
 //				toggle = (ToggleButton) findViewById(R.id.toggle);
 //				Runtime runtime = Runtime.getRuntime();
@@ -120,29 +122,29 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 		return false;
 	}
 	
-	public String getWIFIIP(){
+	public String getIP(){
 		WifiManager wifiManger = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManger.getConnectionInfo();
 		int ip = wifiInfo.getIpAddress();
 		return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "." + ((ip >> 16) & 0xFF) + "." + (ip >> 24 & 0xFF);
 	}
 
-	@Override
-	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if(isChecked){
-			if(!isRun){
-				start();
-				isRun = true;
-				ip.setText("��CMD����:\nadb connect " + getWIFIIP());
-			}
-		}else{
-			if(isRun){
-				stop();
-				isRun = false;
-				ip.setText("");
-			}
-		}
-	}
+//	@Override
+//	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//		if(isChecked){
+//			if(!isRun){
+//				start();
+//				isRun = true;
+//				ip.setText("��CMD����:\nadb connect " + getWIFIIP());
+//			}
+//		}else{
+//			if(isRun){
+//				stop();
+//				isRun = false;
+//				ip.setText("");
+//			}
+//		}
+//	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

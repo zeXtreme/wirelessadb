@@ -4,8 +4,13 @@
     <EditTextPreference
         android:defaultValue="5555"
         android:dialogTitle="@string/port"
+        android:enabled="false"
         android:key="port"
         android:summary="@string/current_port"
         android:title="@string/port" />
+
+    <Preference
+        android:key="about"
+        android:title="@string/about" />
 
 </PreferenceScreen>

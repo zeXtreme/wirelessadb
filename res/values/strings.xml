@@ -6,5 +6,6 @@
     <string name="setting">Setting</string>
     <string name="port">Port</string>
     <string name="current_port">Current port:%d</string>
+    <string name="about">About</string>
 
 </resources>
