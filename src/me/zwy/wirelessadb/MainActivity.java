@@ -45,6 +45,9 @@ public class MainActivity extends Activity {
 				setContentView(R.layout.main);
 				adb_info = (TextView) findViewById(R.id.adb_info);
 				adb_switch = (Switch) findViewById(R.id.adb_switch);
+				if(!ShellUtils.checkRootPermission()){
+					adb_switch.setEnabled(false);
+				}
 //				ip = (TextView) findViewById(R.id.IP);
 //				toggle = (ToggleButton) findViewById(R.id.toggle);
 //				Runtime runtime = Runtime.getRuntime();
