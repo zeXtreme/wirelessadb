@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">WirelessADB</string>
+    <string name="on">开启</string>
+    <string name="off">关闭</string>
+    <string name="setting">设置</string>
+    <string name="port">端口</string>
+    <string name="current_port">当前端口:%d</string>
+    <string name="about">关于</string>
+
+</resources>

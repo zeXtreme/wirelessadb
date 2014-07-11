@@ -16,6 +16,7 @@ public class SettingActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting);
+		getActionBar().setTitle(getResources().getString(R.string.setting));
 	}
 	
 	public static class SettingFragment extends PreferenceFragment{

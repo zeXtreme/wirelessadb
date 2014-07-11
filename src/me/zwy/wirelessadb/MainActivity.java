@@ -29,130 +29,90 @@ import me.zwy.utils.ShellUtils;
 import me.zwy.utils.ShellUtils.CommandResult;
 import me.zwy.wirelessadb.R;
 
-public class MainActivity extends Activity {
-	
-//	private TextView ip;
-//	private ToggleButton toggle;
-//	private boolean isCheck;
-//	private boolean isRun;
+public class MainActivity extends Activity implements OnCheckedChangeListener {
+
 	private TextView adb_info;
 	private Switch adb_switch;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		if(isConnectWIFI()){
-				setContentView(R.layout.main);
-				adb_info = (TextView) findViewById(R.id.adb_info);
-				adb_switch = (Switch) findViewById(R.id.adb_switch);
-				if(!ShellUtils.checkRootPermission()){
-					adb_switch.setEnabled(false);
-				}
-//				ip = (TextView) findViewById(R.id.IP);
-//				toggle = (ToggleButton) findViewById(R.id.toggle);
-//				Runtime runtime = Runtime.getRuntime();
-//				try {
-//					Process pro = runtime.exec("getprop service.adb.tcp.port");
-//					if(pro.waitFor() == 0){
-//						BufferedReader in = new BufferedReader(new InputStreamReader(pro.getInputStream()));
-//						String msg = in.readLine();
-//						in.close();
-//						if(msg.contains("5555")){
-//							isCheck = true;
-//							isRun = true;
-//						}else{
-//							isCheck = false;
-//							isRun = false;
-//						}
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			if(savedInstanceState != null){
-//				isCheck = savedInstanceState.getBoolean("toggle");
-//			}
-//			toggle.setChecked(isCheck);
-//			if(isCheck){
-//				ip.setText("��CMD����:\nadb connect " + getWIFIIP());
-//			}else{
-//				ip.setText("");
-//			}
-//			toggle.setOnCheckedChangeListener(this);
-//		}else{
-//			new AlertDialog.Builder(this).setTitle("û��WIFI���ӣ�").setMessage("������WIFI��").setCancelable(false).setPositiveButton("ȷ��", new OnClickListener() {
-//				@Override
-//				public void onClick(DialogInterface dialog, int which) {
-//					finish();
-//				}
-//			}).show();
-//		}
+		if (isConnectWIFI()) {
+			setContentView(R.layout.main);
+			adb_info = (TextView) findViewById(R.id.adb_info);
+			adb_switch = (Switch) findViewById(R.id.adb_switch);
+			if (!ShellUtils.checkRootPermission()) {
+				adb_switch.setEnabled(false);
+				adb_info.setText("手机没有ROOT权限");
+			}else{
+				adb_switch.setOnCheckedChangeListener(this);
+			}
+		} else {
+			Toast.makeText(this, "没有可用的WIFI网络", Toast.LENGTH_SHORT).show();
+			finish();
+		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if(item.getItemId() == R.id.ic_setting){
+		if (item.getItemId() == R.id.ic_setting) {
 			Intent intent = new Intent(this, SettingActivity.class);
 			startActivity(intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	public boolean start(){
-		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_START, true);
+
+	public boolean start() {
+		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_START,
+				true);
 		return result.result == 0;
 	}
-	
-	public boolean stop(){
-		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_STOP, true);
+
+	public boolean stop() {
+		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_STOP,
+				true);
 		return result.result == 0;
 	}
-	
-	public boolean isConnectWIFI(){
+
+	public boolean isConnectWIFI() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		if(info != null){
+		if (info != null) {
 			return info.isConnected();
 		}
 		return false;
 	}
-	
-	public String getIP(){
+
+	public String getIP() {
 		WifiManager wifiManger = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiManger.getConnectionInfo();
 		int ip = wifiInfo.getIpAddress();
-		return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "." + ((ip >> 16) & 0xFF) + "." + (ip >> 24 & 0xFF);
+		return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "."
+				+ ((ip >> 16) & 0xFF) + "." + (ip >> 24 & 0xFF);
 	}
 
-//	@Override
-//	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//		if(isChecked){
-//			if(!isRun){
-//				start();
-//				isRun = true;
-//				ip.setText("��CMD����:\nadb connect " + getWIFIIP());
-//			}
-//		}else{
-//			if(isRun){
-//				stop();
-//				isRun = false;
-//				ip.setText("");
-//			}
-//		}
-//	}
-	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-//		outState.putBoolean("toggle", toggle.isChecked());
+		// outState.putBoolean("toggle", toggle.isChecked());
 	}
-	
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if(isChecked){
+			start();
+			adb_info.setText(getIP());
+		}else{
+			stop();
+			adb_info.setText("");
+		}
+	}
+
 }
