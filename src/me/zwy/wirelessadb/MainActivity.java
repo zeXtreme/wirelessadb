@@ -1,17 +1,7 @@
 package me.zwy.wirelessadb;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -24,7 +14,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 import me.zwy.utils.ShellUtils;
 import me.zwy.utils.ShellUtils.CommandResult;
 import me.zwy.wirelessadb.R;
@@ -33,6 +22,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	private TextView adb_info;
 	private Switch adb_switch;
+	private boolean isRun;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +31,12 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 			setContentView(R.layout.main);
 			adb_info = (TextView) findViewById(R.id.adb_info);
 			adb_switch = (Switch) findViewById(R.id.adb_switch);
+			isRun = checkIsRun();
 			if (!ShellUtils.checkRootPermission()) {
 				adb_switch.setEnabled(false);
 				adb_info.setText("手机没有ROOT权限");
 			}else{
+				adb_switch.setChecked(isRun);
 				adb_switch.setOnCheckedChangeListener(this);
 			}
 		} else {
@@ -80,6 +72,11 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 				true);
 		return result.result == 0;
 	}
+	
+	public boolean checkIsRun(){
+		CommandResult result = ShellUtils.execCommand(Constant.COMMAD_STATUS, false, true);
+		return result.successMsg.equals(String.valueOf(BaseApplication.port_current));
+	}
 
 	public boolean isConnectWIFI() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -106,7 +103,7 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if(isChecked){
+		if(isChecked && !isRun){
 			start();
 			adb_info.setText(getIP());
 		}else{
