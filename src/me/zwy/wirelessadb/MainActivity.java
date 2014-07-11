@@ -105,9 +105,11 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		if(isChecked && !isRun){
 			start();
+			isRun = true;
 			adb_info.setText(getIP());
 		}else{
 			stop();
+			isRun = false;
 			adb_info.setText("");
 		}
 	}
