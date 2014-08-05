@@ -22,7 +22,6 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	private TextView adb_info;
 	private Switch adb_switch;
-	private boolean isRun;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +30,14 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 			setContentView(R.layout.main);
 			adb_info = (TextView) findViewById(R.id.adb_info);
 			adb_switch = (Switch) findViewById(R.id.adb_switch);
-			isRun = checkIsRun();
-			if (!ShellUtils.checkRootPermission()) {
+			if (!BaseApplication.isRoot) {
 				adb_switch.setEnabled(false);
 				adb_info.setText("手机没有ROOT权限");
 			}else{
-				adb_switch.setChecked(isRun);
+				adb_switch.setChecked(checkIsRun());
+				if(adb_switch.isChecked()){
+					adb_info.setText(getIP());
+				}
 				adb_switch.setOnCheckedChangeListener(this);
 			}
 		} else {
@@ -103,13 +104,11 @@ public class MainActivity extends Activity implements OnCheckedChangeListener {
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-		if(isChecked && !isRun){
+		if(isChecked && !checkIsRun()){
 			start();
-			isRun = true;
 			adb_info.setText(getIP());
 		}else{
 			stop();
-			isRun = false;
 			adb_info.setText("");
 		}
 	}
